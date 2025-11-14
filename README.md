@@ -1,6 +1,8 @@
 # 🏟️ Sistema de Gestão para ONG - Esporte e Vida
 
-[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=SEU_KEY_AQUI&metric=alert_status)](https://sonarcloud.io/dashboard?id=SEU_KEY_AQUI)
+[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=tinalmeid_CST-ciencia-dados-projeto-extensao-2-semestre&metric=alert_status)](https://sonarcloud.io/dashboard?id=tinalmeid_CST-ciencia-dados-projeto-extensao-2-semestre)
+[![Coverage](https://sonarcloud.io/api/project_badges/measure?project=tinalmeid_CST-ciencia-dados-projeto-extensao-2-semestre&metric=coverage)](https://sonarcloud.io/dashboard?id=tinalmeid_CST-ciencia-dados-projeto-extensao-2-semestre)
+[![Maintainability Rating](https://sonarcloud.io/api/project_badges/measure?project=tinalmeid_CST-ciencia-dados-projeto-extensao-2-semestre&metric=sqale_rating)](https://sonarcloud.io/dashboard?id=tinalmeid_CST-ciencia-dados-projeto-extensao-2-semestre)
 [![Python](https://img.shields.io/badge/Python-3.10+-blue.svg)](https://www.python.org/)
 [![Architecture](https://img.shields.io/badge/Architecture-DDD%20Lite-orange)](https://en.wikipedia.org/wiki/Domain-driven_design)
 

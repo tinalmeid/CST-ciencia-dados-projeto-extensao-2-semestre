@@ -30,10 +30,10 @@ jobs:
 
       - name: Run Tests & Coverage
         run: |
-          # Verifica se o arquivo sistema_ong_ddd.py existe antes de testar
+          # Descobre testes na pasta 'tests' e considera a raiz como source
           if [ -f sistema_ong_ddd.py ]; then
             echo "Arquivo encontrado. Rodando testes..."
-            coverage run -m unittest sistema_ong_ddd.py
+            coverage run -m unittest discover -s tests -t .
             coverage xml
           else
             echo "⚠️ Nenhum código Python encontrado. Pulando etapa de testes."
