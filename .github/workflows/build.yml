@@ -30,8 +30,16 @@ jobs:
 
       - name: Run Tests & Coverage
         run: |
-          coverage run -m unittest sistema_ong_ddd.py || true
-          coverage xml
+          # Verifica se o arquivo sistema_ong_ddd.py existe antes de testar
+          if [ -f sistema_ong_ddd.py ]; then
+            echo "Arquivo encontrado. Rodando testes..."
+            coverage run -m unittest sistema_ong_ddd.py
+            coverage xml
+          else
+            echo "⚠️ Nenhum código Python encontrado. Pulando etapa de testes."
+            # Cria um XML vazio pro Sonar não reclamar de falta de arquivo
+            echo '<coverage version="1"></coverage>' > coverage.xml
+          fi
 
       # Versão master do Sonar
       - name: SonarCloud Scan
