@@ -20,7 +20,7 @@ class TestPesquisaDomain(unittest.TestCase):
         except ValueError as e:
             self.fail(f"Validação falhou inesperadamente: {e}")
     
-    def test_pesquisa_sem_nome_evento(self):
+    def test_pesquisa_nome_evento_vazio(self):
         'Caminho Error: nome do evento ausente.'
         pesquisa = Pesquisa(
             nome_evento="", #Nome do evento vazio

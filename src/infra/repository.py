@@ -7,14 +7,13 @@ class PesquisaRepository:
     'Gerencia a persistência das entidades Pesquisa no banco de dados SQLite.'
     def __init__(self, db_name='dados_ong_ibis.db'):
         self.db_name = db_name
-        'Cria a tabela de pesquisas se não existir.'
-        self._setup_db()
-    
-    def _setup_db(self):
-        'Configura a conexão com o banco de dados SQLite.'
-        conn = sqlite3.connect(self.db_name)
-        cursor = conn.cursor()
-
+       
+    def _get_connection(self):
+        'Abre uma conexão com o banco.'
+        return sqlite3.connect(self.db_name)
+        
+    def _garantir_tabela(self, cursor):
+       
         cursor.execute('''
             CREATE TABLE IF NOT EXISTS pesquisas (
                 id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -28,60 +27,64 @@ class PesquisaRepository:
                 data_registro TEXT NOT NULL
             )
         ''')
+
+    def salvar(self, pesquisa: Pesquisa):
+        'Salva uma entidade Pesquisa no banco de dados.'
+        pesquisa.validar()
+  
+        conn = self._get_connection()
+        cursor = conn.cursor()
+
+        self._garantir_tabela(cursor)
+
+        cursor.execute('''
+            INSERT INTO pesquisas (
+                nome_evento,
+                faixa_etaria, 
+                mora_no_bairro,
+                atividade_favorita, 
+                melhoria_sugerida,
+                frequencia, 
+                nota_nps, 
+                data_registro
+             ) VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+                ''', 
+            (
+                pesquisa.nome_evento,
+                pesquisa.faixa_etaria,
+                pesquisa.mora_no_bairro,
+                pesquisa.atividade_favorita,
+                pesquisa.melhoria_sugerida,
+                pesquisa.frequencia,
+                pesquisa.nota_nps,
+                pesquisa.data_registro
+            )
+        )
         conn.commit()
         conn.close()
 
-        def salvar(self, pesquisa: Pesquisa):
-            'Salva uma entidade Pesquisa no banco de dados.'
-            pesquisa.validar()
+    def buscar_todos(self) -> pd.DataFrame:
+        'Busca todas as pesquisas no BD e retorna para o Pandas DataFrame.' 
+        conn = self._get_connection()
 
-            conn = sqlite3.connect(self.db_name)
-            cursor = conn.cursor()
+        self._garantir_tabela(conn.cursor())
+        'Pandas lê SQL e converte para DataFrame.'
+        df = pd.read_sql_query(""
+        "   SELECT * FROM pesquisas", conn)
 
-            cursor.execute('''
-                    INSERT INTO pesquisas (
-                        nome_evento,
-                        faixa_etaria, 
-                        mora_no_bairro,
-                        atividade_favorita, 
-                        melhoria_sugerida,
-                        frequencia, 
-                        nota_nps, 
-                        data_registro
-                    ) VALUES (?, ?, ?, ?, ?, ?, ?, ?)
-                ''', 
-                (
-                    pesquisa.nome_evento,
-                    pesquisa.faixa_etaria,
-                    pesquisa.mora_no_bairro,
-                    pesquisa.atividade_favorita,
-                    pesquisa.melhoria_sugerida,
-                    pesquisa.frequencia,
-                    pesquisa.nota_nps,
-                    pesquisa.data_registro
-                )
-            )
+        conn.close()
+        return df
 
-            conn.commit()
-            conn.close()
+    def listar_eventos(self) -> pd.DataFrame:
+        'Lista os nomes dos eventos únicos presentes no banco de dados.'
+        conn = self._get_connection()
+        cursor = conn.cursor()
 
-            def buscar_todos(self) -> pd.DataFrame:
-                'Busca todas as pesquisas no BD e retorna para o Pandas DataFrame.'
-                conn = sqlite3.connect(self.db_name)
-                'Pandas lê SQL e converte para DataFrame.'
-                df = pd.read_sql_query(""
-                "   SELECT * FROM pesquisas", conn)
-                conn.close()
-                return df
+        
 
-            def listar_eventos(self) -> pd.DataFrame:
-                'Lista os nomes dos eventos únicos presentes no banco de dados.'
-                conn = sqlite3.connect(self.db_name)
-                cursor = conn.cursor()
-
-                cursor.execute(""
-                "   SELECT DISTINCT nome_evento FROM pesquisas WHERE nome_evento IS NOT NULL")
-                eventos = [row[0] for row in cursor.fetchall()]
+        cursor.execute(""
+        "   SELECT DISTINCT nome_evento FROM pesquisas WHERE nome_evento IS NOT NULL")
+        eventos = [row[0] for row in cursor.fetchall()]
                 
-                conn.close()
-                return eventos
+        conn.close()
+        return eventos
