@@ -10,7 +10,7 @@ class Pesquisa:
     faixa_etaria: Optional[str] = None
     mora_no_bairro: Optional[bool] = None
     atividade_favorita: Optional[str] = None
-    melhoria_sugeridas: Optional[str] = None
+    melhoria_sugerida: Optional[str] = None
     frequencia : Optional[str] = None
     nota_nps: Optional[int] = None
     data_registro: Optional[datetime] = None
@@ -32,9 +32,14 @@ class Pesquisa:
         if not isinstance(self.mora_no_bairro, bool):
             raise ValueError("O campo 'Mora no Bairro' deve ser respondido com Sim ou Não.")
         
+        if not self.frequencia or not self.melhoria_sugerida:
+            raise ValueError("Campos obrigatórios (Frequência ou Melhoria Sugerida) estão vazios.")
+        
         if not isinstance(self.nota_nps, int):
             raise ValueError("A nota NPS deve ser um número inteiro.")
         
         if not (0 <= self.nota_nps <= 10):
             raise ValueError("A nota NPS deve estar entre 0 e 10.")
+        
+    
         
