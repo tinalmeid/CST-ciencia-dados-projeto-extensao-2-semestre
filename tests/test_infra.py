@@ -73,3 +73,8 @@ class TestPesquisaRepository(unittest.TestCase):
         self.assertEqual(len(lista), 2)
         self.assertIn("Evento Teste A", lista)
         self.assertIn("Evento Teste B", lista)
+    
+    def test_buscar_todas_banco_vazio(self):
+        'Testa se o sistema lida bem quando não tem nada no banco'
+        df = self.repo.buscar_todos()
+        self.assertTrue(df.empty) # Tem que retornar vazio, não pode dar erro
