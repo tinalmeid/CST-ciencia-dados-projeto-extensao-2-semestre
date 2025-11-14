@@ -31,9 +31,10 @@ jobs:
       - name: Run Tests & Coverage
         run: |
           # Descobre testes na pasta 'tests' e considera a raiz como source
-          echo "Rodando testes automatizados..."
-            coverage run -m unittest discover -s tests -t .
-            coverage xml
+          # O comando --omit força o relatório a ignorar a pasta UI e o main.py
+          echo "Rodando testes automatizados..."          
+          coverage run --source=src --omit="src/ui/*,main.py" -m unittest discover -s tests -t .
+          coverage xml -o coverage.xml
 
       # Versão master do Sonar
       - name: SonarCloud Scan
