@@ -1,0 +1,31 @@
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+env/
+venv/
+.env
+
+# Banco de Dados (Não versionar dados reais ou de teste local)
+*.db
+*.sqlite3
+
+# Executáveis gerados pelo PyInstaller
+*.exe
+build/
+dist/
+*.spec
+
+# Logs e Relatórios
+*.log
+coverage.xml
+htmlcov/
+
+# IDEs
+.vscode/
+.idea/
+
+# Sonar
+.scannerwork/
