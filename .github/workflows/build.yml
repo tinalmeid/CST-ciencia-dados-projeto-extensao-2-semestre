@@ -31,15 +31,9 @@ jobs:
       - name: Run Tests & Coverage
         run: |
           # Descobre testes na pasta 'tests' e considera a raiz como source
-          if [ -f sistema_ong_ddd.py ]; then
-            echo "Arquivo encontrado. Rodando testes..."
+          echo "Rodando testes automatizados..."
             coverage run -m unittest discover -s tests -t .
             coverage xml
-          else
-            echo "⚠️ Nenhum código Python encontrado. Pulando etapa de testes."
-            # Cria um XML vazio pro Sonar não reclamar de falta de arquivo
-            echo '<coverage version="1"></coverage>' > coverage.xml
-          fi
 
       # Versão master do Sonar
       - name: SonarCloud Scan
