@@ -12,12 +12,14 @@ jobs:
     name: SonarCloud Scan
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@b4ffde65f4633668828c0807b554c59532332f53 # v4.1.1
+      # Versão v4 (mais estável)
+      - uses: actions/checkout@v4
         with:
-          fetch-depth: 0 # Para análise do Sonar
+          fetch-depth: 0
 
+      # Versão v5
       - name: Set up Python
-        uses: actions/setup-python@0a5c61591373683505ea898e09a3ea4f39ef2b9c # v5.0.0
+        uses: actions/setup-python@v5
         with:
           python-version: "3.10"
 
@@ -31,8 +33,9 @@ jobs:
           coverage run -m unittest sistema_ong_ddd.py || true
           coverage xml
 
+      # Versão master do Sonar
       - name: SonarCloud Scan
-        uses: SonarSource/sonarcloud-github-action@49e6cd3b187936a73b8280d59ffd9da69df63ec9 # v2.1.1
+        uses: SonarSource/sonarcloud-github-action@master
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # Gerado auto pelo GitHub
-          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }} # Definido nas configurações do repositório
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }} # Token gerado no SonarCloud
