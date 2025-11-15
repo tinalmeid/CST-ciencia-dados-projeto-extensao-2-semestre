@@ -12,6 +12,16 @@ Este software foi desenvolvido como parte do **Projeto de Extensão em Ciência 
 
 O sistema permite o cadastro offline de participantes, armazena os dados em banco local (SQLite) e gera Dashboards automáticos para apoio à tomada de decisão e captação de patrocínios.
 
+## 📸 Demonstração
+
+### Formulário de Cadastro
+
+![Tela de Cadastro](images\tela_cadastro.png)
+
+### Dashboards Gerenciais (BI)
+
+![Dashboard de Dados](images\tela_dashboard.png)
+
 ## 🚀 Tecnologias e Arquitetura
 
 O projeto segue princípios de **Clean Code** e uma arquitetura baseada em **DDD (Domain-Driven Design)** simplificado:
@@ -19,8 +29,8 @@ O projeto segue princípios de **Clean Code** e uma arquitetura baseada em **DDD
 - **Linguagem:** Python 3.x
 - **Interface (UI):** Tkinter (Nativo)
 - **Banco de Dados:** SQLite
-- **Análise de Dados:** Pandas & Matplotlib
-- **Qualidade:** Unittest (Testes Automatizados) & SonarCloud
+- **Análise de Dados:** Pandas, Matplotlib & OpenPyXL
+- **Qualidade:** Unittest (Teste Unitários) & SonarCloud
 
 ### Estrutura de Camadas
 
@@ -38,14 +48,20 @@ O projeto segue princípios de **Clean Code** e uma arquitetura baseada em **DDD
 ### Instalação
 
 1.  Clone o repositório:
+
     ```bash
-    git clone [https://github.com/seu-usuario/sistema-ong-ddd.git](https://github.com/seu-usuario/sistema-ong-ddd.git)
+    git clone https://github.com/tinalmeid_CST-ciencia-dados-projeto-extensao-2-semestre.git
     ```
-2.  Instale as dependências:
+
+2.  Entre na pasta:
+    ```bash
+    cd CST-ciencia-dados-projeto-extensao-2-semestre
+    ```
+3.  Instale as dependências:
     ```bash
     pip install pandas matplotlib
     ```
-3.  Execute o sistema:
+4.  Execute o sistema:
     ```bash
     python sistema_ong_ddd.py
     ```
@@ -58,6 +74,19 @@ O projeto segue princípios de **Clean Code** e uma arquitetura baseada em **DDD
 - ✅ Geração de Dashboards (Pizza e Barras).
 - ✅ Geração de Dados Fictícios (Mock) para testes.
 
----
+## 📂 Estrutura do Projeto
+
+```text
+CST-ciencia-dados-projeto-extensao/
+│
+├── src/                       # Código Fonte Principal
+│   ├── domain/                # Regras de Negócio (Entidades e Validações)
+│   ├── infra/                 # Persistência de Dados (Repositório SQLite)
+│   └── ui/                    # Interface Gráfica (Tkinter)
+│
+├── tests/                     # Testes Unitários Automatizados
+├── main.py                    # Ponto de Entrada (Entry Point)
+└── requirements.txt           # Dependências do Projeto
+```
 
 **Desenvolvido por:** Cristina de Almeida
