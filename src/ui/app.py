@@ -129,36 +129,87 @@ class SistemaONGApp:
     def ver_dashboard_click(self):
         df = self.repo.buscar_todos()
         if df.empty:
-            messagebox.showwarning("Atenção", "Nenhum dado disponível para exibir o dashboard.")
+            messagebox.showwarning("Vazio", "Nenhum dado cadastrado ainda!")
             return
         
-        # Gráfico Simples com Matplotlib
-        plt.figure(figsize=(12, 6))
-        plt.suptitle("Dashboard: Indicadores de Impacto - ONG IBIS", fontsize=16, fontweight='bold')
+        nome_evento_atual = self.entry_evento.get()
+        if not nome_evento_atual:
+            nome_evento_atual = "Geral"
+        
+        # Aumentamos o tamanho da janela para caber tudo
+        plt.figure(num="Painel de Gráficos - ONG IBIS", figsize=(16, 9))
+        plt.suptitle("Dashboard Estratégico: Evento " + nome_evento_atual, fontsize=18, weight='bold')
+        
+        # Ajuste de espaçamento entre os gráficos
+        plt.subplots_adjust(hspace=0.5, wspace=0.3)
 
-        # Gráfico 1:Atividades
-        plt.subplot(1, 2, 1)
-        df['atividade_favorita'].value_counts().plot(kind='bar', color='purple')
-        plt.title("Atividades Favoritas")
-        plt.xlabel('')
+        # --- SUPERIOR ---
 
-        # Gráfico 2: Origem dos Participantes
-        plt.subplot(1, 2, 2)
-        #Mapeia: 1 -> Bairro / 0 -> Fora do Bairro
-        nomes_bairro = df['mora_no_bairro'].map({True: 'Bairro', False: 'Fora do Bairro'})
-        nomes_bairro.value_counts().plot(kind='pie', autopct='%1.1f%%', colors=['#66b3ff',"#ffbb99"])
-        plt.title("Origem dos Participantes")
+        # Gráfico 1: Faixa Etária (Pizza)
+        plt.subplot(2, 3, 1)
+        df['faixa_etaria'].value_counts().plot(kind='pie', autopct='%1.1f%%', colors=['#66b3ff','#78dc78','#ff9999','#cccccc'])
+        plt.title('1. Perfil Etário')
+        plt.ylabel('')
 
-        plt.tight_layout()
+        # Gráfico 2: Origem (Pizza)
+        plt.subplot(2, 3, 2)
+        mapa_bairro = {
+            1: 'Mora no Bairro',
+            0: 'Não Mora no Bairro',
+            'Sim': 'Mora no Bairro',
+            'Não': 'Não Mora no Bairro'
+        }
+        nomes_bairro = df['mora_no_bairro'].map(mapa_bairro).fillna('Desconhecido')
+        nomes_bairro.value_counts().plot(kind='pie', autopct='%1.1f%%', colors=['#66b3ff',"#78dc78"])
+        plt.title('2. Origem do Público')
+        plt.ylabel('')
+
+        # Gráfico 3: Melhorias (Pizza)
+        plt.subplot(2, 3, 3)
+        df['melhoria_sugerida'].value_counts().plot(kind='pie',autopct='%1.1f%%', colors=['#66b3ff','#78dc78','#ff9999','#cccccc'])
+        plt.title('3. O que melhorar?')
+        plt.ylabel('')
+
+        # --- INFERIOR ---
+
+        # Gráfico 4: Atividades (Barras)
+        ax1 = plt.subplot(2, 3, 4)
+        df['atividade_favorita'].value_counts().plot(kind='bar', color='#66b3ff')
+        ax1.set_title('4. Atividades Favoritas')
+        ax1.set_xlabel('')
+        ax1.grid(axis='y', alpha=0.3)
+        ax1.tick_params(axis='x', rotation=45)
+        ax1.bar_label(ax1.containers[0], label_type='center',padding=2)  
+
+         # Gráfico 5: Frequência (Barras) - NOVO
+        ax2 = plt.subplot(2, 3, 5)
+        df['frequencia'].value_counts().plot(kind='bar', color='#78dc78')
+        ax2.set_title('5. Fidelidade do Público')
+        ax2.set_xlabel('')
+        ax2.grid(axis='y', alpha=0.3)
+        ax2.tick_params(axis='x', rotation=45)
+        ax2.bar_label(ax2.containers[0], label_type='center',padding=2)  
+
+        # Gráfico 6: NPS (Barras) - NOVO
+        ax3 = plt.subplot(2, 3, 6)
+        df['nota_nps'].value_counts().sort_index().plot(kind='bar', color='#ff9999')
+        ax3.set_title('6. Distribuição NPS (Satisfação)')
+        ax3.set_xlabel('Nota (0-10)')
+        ax3.grid(axis='y', alpha=0.3)
+        ax3.tick_params(axis='x', rotation=0)
+        ax3.bar_label(ax3.containers[0], label_type='center',padding=2)  
+
         plt.show()
 
     def gerar_dados_fake(self):
         'Gera dados fake para testes.'
-        evento = self.repo.listar_eventos() or ["Evento Teste"]
-
+        evento_txt = self.entry_evento.get()
+        if not evento_txt:
+            evento_txt = "Evento Teste Automático"
+            
         for _ in range(50):
             pesquisa_fake = Pesquisa(
-                nome_evento=evento,
+                nome_evento=evento_txt,
                 faixa_etaria=random.choice(['Até 12 anos', '13 a 17 anos', '18 a 25 anos']),
                 mora_no_bairro=random.choice([True, False]),
                 atividade_favorita=random.choice(['Futebol / Futsal', 'Dança', 'Brincadeiras', 'Pintura de Rosto']),
@@ -168,4 +219,4 @@ class SistemaONGApp:
             )
             self.repo.salvar(pesquisa_fake)
         
-        messagebox.showinfo("DEV Mode", f"50 pesquisas fake foram geradas com sucesso para o evento : {evento}!")
+        messagebox.showinfo("DEV Mode", f"50 pesquisas fake foram geradas com sucesso para o evento : {evento_txt}!")
