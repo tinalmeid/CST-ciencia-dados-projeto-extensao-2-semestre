@@ -16,11 +16,11 @@ O sistema permite o cadastro offline de participantes, armazena os dados em banc
 
 ### Formulário de Cadastro
 
-![Tela de Cadastro](images\tela_cadastro.png)
+![Tela de Cadastro](images/tela_cadastro.png)
 
 ### Dashboards Gerenciais (BI)
 
-![Dashboard de Dados](images\tela_dashboard.png)
+![Dashboard de Dados](images/tela_dashboard.png)
 
 ## 🚀 Tecnologias e Arquitetura
 
